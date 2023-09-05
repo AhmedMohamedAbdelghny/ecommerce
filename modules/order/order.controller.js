@@ -155,3 +155,27 @@ export const cancelorder = asyncHandler(async (req, res, next) => {
   res.status(201).json({ msg: "done cancel" })
 });
 
+// *************************************webhook**********************************
+export const webhook = asyncHandler(async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const stripe = new Stripe(process.env.stripeKey)
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.endpointSecret);
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  // Handle the event
+  let { orderId } = event.data.object.metadata
+  if (event.type != 'checkout.session.completed') {
+    await orderModel.updateOne({ _id: orderId }, { status: "rejected" })
+    res.status(400).json({ msg: "order rejected" })
+  }
+  await orderModel.updateOne({ _id: orderId }, { status: "placed" })
+  res.status(400).json({ msg: "order done" })
+  // Return a 200 res to acknowledge receipt of the event
+  res.send();
+})

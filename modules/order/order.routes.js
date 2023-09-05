@@ -19,4 +19,7 @@ router.patch(
 );
 
 
+router.post('/webhook', express.raw({type: 'application/json'}), OV.webhook);
+
+
 export default router;
