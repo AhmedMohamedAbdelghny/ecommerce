@@ -138,7 +138,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body
     const user = await userModel.findOne({ email: email.toLowerCase() })
     if (!user) {
-        return next(new AppError("user already exist", 400))
+        return next(new AppError("user not exist", 400))
     }
     if (user.confirmed == false) {
         return next(new AppError("email not confirmed yet ", 400))
