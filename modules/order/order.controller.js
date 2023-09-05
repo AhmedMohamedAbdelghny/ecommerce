@@ -1,9 +1,9 @@
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import cartModel from "../../DB/models/cart.model.js";
 import couponModel from "../../DB/models/coupon.model.js";
 import productModel from "../../DB/models/product.model.js";
 import { AppError, asyncHandler } from "../../utils/globalError.js";
-import createInvoice from "../../utils/pdf.js";
+// import createInvoice from "../../utils/pdf.js";
 import orderModel from "./../../DB/models/order.model.js";
 import Stripe from "stripe";
 import payment from "../../utils/payment.js";
@@ -83,22 +83,22 @@ export const createorder = asyncHandler(async (req, res, next) => {
 
   }
   // invoice
-  const invoice = {
-    shipping: {
-      name: req.user.name,
-      address: "1234 Main Street",
-      city: "cairo",
-      country: "cairo",
-    },
-    date: order.createdAt,
-    items: req.body.products,
-    subtotal: subPrice,
-    totalPrice: order.totalPrice,
-    invoice_nr: order._id,
-    couponCode: req.body.coupon ? req.body.coupon.code : "not exist"
-  };
-  const path = req.user.name + nanoid(3)
-  await createInvoice(invoice, `${path}.pdf`);
+  // const invoice = {
+  //   shipping: {
+  //     name: req.user.name,
+  //     address: "1234 Main Street",
+  //     city: "cairo",
+  //     country: "cairo",
+  //   },
+  //   date: order.createdAt,
+  //   items: req.body.products,
+  //   subtotal: subPrice,
+  //   totalPrice: order.totalPrice,
+  //   invoice_nr: order._id,
+  //   couponCode: req.body.coupon ? req.body.coupon.code : "not exist"
+  // };
+  // const path = req.user.name + nanoid(3)
+  // await createInvoice(invoice, `${path}.pdf`);
 
   //payment
   if (req.body.paymentMethod == 'visa') {
