@@ -147,6 +147,8 @@ export const signIn = asyncHandler(async (req, res, next) => {
     if (!match) {
         return next(new AppError("password not match try again", 400))
     }
+    user.active = true
+    user.save()
     const token = jwt.sign({ email: user.email, id: user._id }, process.env.signature, { expiresIn: '7 day' })
 
     res.status(201).json({ msg: "done", token })
