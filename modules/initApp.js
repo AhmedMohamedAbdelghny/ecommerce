@@ -26,8 +26,7 @@ export const initApp = (app, express) => {
       express.json({})(req, res, next)
     }
   });
-  //ahmed
-  //xx
+  //ammar
   app.use(morgan("dev"));
   app.use("/users", userRoutes);
   app.use("/categories", categoryRoutes);
